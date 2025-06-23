@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sokoly Companys - Imóveis</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="login" href="login.html" />
+  <link rel="imoveis" href="imoveis.html" />
+  <link rel="java" href="java.js" />
+</head>
+<body>
+
+  <!-- Menu de Navegação -->
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">Sokoly Companys</h1>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Imóveis</a></li>
+        <li><a href="#">Anunciar</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Banner Principal -->
+  <section class="banner">
+    <h2>Encontre seu imóvel dos sonhos</h2>
+    <p>Imóveis selecionados com tecnologia e confiança</p>
+    <a href="#" class="btn-banner">Mais Detalhes</a>
+  </section>
+
+  <!-- Imóveis em Destaque -->
+  <section class="destaques">
+    <h2>Imóveis em Destaque</h2>
+    <div class="cards-container">
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Apartamento Luxo"/>
+        <h3>Apartamento em Alphaville</h3>
+        <p>R$ 2.500.000 • 3 quartos • 200m²</p>
+      </div>
+
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Casa de Praia"/>
+        <h3>Casa de Praia em Búzios</h3>
+        <p>R$ 4.200.000 • 5 quartos • 400m²</p>
+      </div>
+
+      <div class="card">
+        <img src="https://via.placeholder.com/300x200" alt="Cobertura Luxo"/>
+        <h3>Cobertura no Leblon</h3>
+        <p>R$ 8.900.000 • 4 suítes • 350m²</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal de Login -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-login">&times;</span>
+      <h2>Entrar</h2>
+      <form id="login-form">
+        <input type="text" placeholder="Usuário" required />
+        <input type="password" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 Sokoly Companys • Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    // Abrir modal
+    document.getElementById('login-btn').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('login-modal').style.display = 'flex';
+    };
+    // Fechar modal
+    document.getElementById('close-login').onclick = function() {
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    // Fechar ao clicar fora do modal
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('login-modal')) {
+        document.getElementById('login-modal').style.display = 'none';
+      }
+    };
+    // Simulação de login
+    document.getElementById('login-form').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Login realizado (simulação)');
+      document.getElementById('login-modal').style.display = 'none';
+    };
+  </script>
+
+</body>
+</html>

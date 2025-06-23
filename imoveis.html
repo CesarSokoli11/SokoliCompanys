@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Imóveis Disponíveis - Sokoly Companys</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Menu de Navegação -->
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">Sokoly Companys</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="imoveis.html" class="active">Imóveis</a></li>
+        <li><a href="#">Anunciar</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Lista de Imóveis -->
+  <section class="destaques">
+    <h2>Todos os Imóveis</h2>
+    <div class="cards-container">
+      <!-- Imóvel cadastrado por você -->
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
+        <h3>Apartamento em Alphaville</h3>
+        <p>R$ 2.500.000 • 3 quartos • 200m²</p>
+        <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+      </div>
+      <!-- Imóvel cadastrado por usuário -->
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80" alt="Casa de Praia"/>
+        <h3>Casa de Praia em Búzios</h3>
+        <p>R$ 4.200.000 • 5 quartos • 400m²</p>
+        <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: usuário123</span>
+      </div>
+      <!-- Outro imóvel cadastrado por usuário -->
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80" alt="Cobertura Luxo"/>
+        <h3>Cobertura no Leblon</h3>
+        <p>R$ 8.900.000 • 4 suítes • 350m²</p>
+        <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: maria_silva</span>
+      </div>
+      <!-- Adicione mais imóveis conforme necessário -->
+    </div>
+  </section>
+
+  <!-- Modal de Login (igual ao index.html) -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-login">&times;</span>
+      <h2>Entrar</h2>
+      <form id="login-form">
+        <input type="text" placeholder="Usuário" required />
+        <input type="password" placeholder="Senha" required />
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <footer>
+    <p>&copy; 2025 Sokoly Companys • Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    // Abrir modal
+    document.getElementById('login-btn').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('login-modal').style.display = 'flex';
+    };
+    // Fechar modal
+    document.getElementById('close-login').onclick = function() {
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    // Fechar ao clicar fora do modal
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('login-modal')) {
+        document.getElementById('login-modal').style.display = 'none';
+      }
+    };
+    // Simulação de login
+    document.getElementById('login-form').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Login realizado (simulação)');
+      document.getElementById('login-modal').style.display = 'none';
+    };
+  </script>
+
+</body>
+</html>
