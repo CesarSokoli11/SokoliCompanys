@@ -15,7 +15,7 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="imoveis.html" class="active">Imóveis</a></li>
-        <li><a href="#">Anunciar</a></li>
+        <li><a href="anunciar.html">Anunciar</a></li>
         <li><a href="#">Contato</a></li>
         <li><a href="#" id="login-btn">Login</a></li>
       </ul>
@@ -26,42 +26,66 @@
   <section class="destaques">
     <h2>Todos os Imóveis</h2>
     <div class="cards-container">
-      <!-- Imóvel cadastrado por você -->
+      <!-- Exemplo de card de imóvel -->
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Apartamento em Alphaville</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Water</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Laguna</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Lagoa</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Lago</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <div class="card">
         <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Apartamento Luxo"/>
         <h3>Casa</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Administrador</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <!-- Imóvel cadastrado por usuário -->
       <div class="card">
@@ -69,6 +93,10 @@
         <h3>Casa de Praia em Búzios</h3>
         <p>R$ 4.200.000 • 5 quartos • 400m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: usuário123</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <!-- Outro imóvel cadastrado por usuário -->
       <div class="card">
@@ -76,6 +104,10 @@
         <h3>Cobertura no Leblon</h3>
         <p>R$ 8.900.000 • 4 suítes • 350m²</p>
         <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: maria_silva</span>
+        <div class="card-actions">
+          <button class="btn-fav" title="Favoritar">&#9734;</button>
+          <button class="btn-detalhes">Detalhes</button>
+        </div>
       </div>
       <!-- Adicione mais imóveis conforme necessário -->
     </div>
@@ -91,6 +123,22 @@
         <input type="password" placeholder="Senha" required />
         <button type="submit">Entrar</button>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal de Detalhes do Imóvel -->
+  <div id="detalhes-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-detalhes">&times;</span>
+      <h2>Detalhes do Imóvel</h2>
+      <p><strong>Endereço:</strong> Exemplo de endereço</p>
+      <p><strong>Tipo:</strong> Apartamento</p>
+      <p><strong>Quartos:</strong> 3</p>
+      <p><strong>Banheiros:</strong> 2</p>
+      <p><strong>Vagas:</strong> 2</p>
+      <p><strong>Área:</strong> 200m²</p>
+      <p><strong>Descrição:</strong> Imóvel de alto padrão em Alphaville, próximo a comércios e escolas.</p>
+      <a href="https://www.google.com/maps" target="_blank" style="color:#ffd700;">Ver no Google Maps</a>
     </div>
   </div>
 
@@ -120,6 +168,31 @@
       e.preventDefault();
       alert('Login realizado (simulação)');
       document.getElementById('login-modal').style.display = 'none';
+    };
+
+    // Favoritar imóvel
+    document.querySelectorAll('.btn-fav').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('favorited');
+        this.innerHTML = this.classList.contains('favorited') ? '&#9733;' : '&#9734;';
+      });
+    });
+
+    // Abrir modal de detalhes (exemplo para todos os botões)
+    document.querySelectorAll('.btn-detalhes').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.getElementById('detalhes-modal').style.display = 'flex';
+      });
+    });
+
+    // Fechar modal de detalhes
+    document.getElementById('close-detalhes').onclick = function() {
+      document.getElementById('detalhes-modal').style.display = 'none';
+    };
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('detalhes-modal')) {
+        document.getElementById('detalhes-modal').style.display = 'none';
+      }
     };
   </script>
 

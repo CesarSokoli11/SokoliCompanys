@@ -102,6 +102,40 @@ header {
   color: #bfae5e;
 }
 
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-fav {
+  background: none;
+  border: none;
+  color: #ffd700;
+  font-size: 1.5em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-fav.favorited {
+  color: #ff5252;
+}
+
+.btn-detalhes {
+  background: #ffd700;
+  color: #181818;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-detalhes:hover {
+  background: #e6c200;
+}
+
 /* Modal de Login */
 .modal {
   display: none;
