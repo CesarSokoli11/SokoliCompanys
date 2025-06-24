@@ -16,9 +16,9 @@
     <nav class="navbar">
       <h1 class="logo">Sokoly Companys</h1>
       <ul class="nav-links">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Imóveis</a></li>
-        <li><a href="#">Anunciar</a></li>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="imoveis.html">Imóveis</a></li>
+        <li><a href="anunciar.html">Anunciar</a></li>
         <li><a href="#">Contato</a></li>
         <li><a href="#" id="login-btn">Login</a></li>
       </ul>
@@ -37,19 +37,19 @@
     <h2>Imóveis em Destaque</h2>
     <div class="cards-container">
       <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Apartamento Luxo"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGN5XkW9tWQGioPjnOT1G158hqehadA8p4lA&s" alt="Apartamento Luxo"/>
         <h3>Apartamento em Alphaville</h3>
         <p>R$ 2.500.000 • 3 quartos • 200m²</p>
       </div>
 
       <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Casa de Praia"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAqsrw1n3VnVqFik0oLIJ1pduc3VU0Ag9bVw&s" alt="Casa de Praia"/>
         <h3>Casa de Praia em Búzios</h3>
         <p>R$ 4.200.000 • 5 quartos • 400m²</p>
       </div>
 
       <div class="card">
-        <img src="https://via.placeholder.com/300x200" alt="Cobertura Luxo"/>
+        <img src="https://d1o0fuw54avhiz.cloudfront.net/capa_b6381e14b7.png" alt="Cobertura Luxo"/>
         <h3>Cobertura no Leblon</h3>
         <p>R$ 8.900.000 • 4 suítes • 350m²</p>
       </div>
@@ -61,11 +61,17 @@
     <div class="modal-content">
       <span class="close-btn" id="close-login">&times;</span>
       <h2>Entrar</h2>
-      <form id="login-form">
-        <input type="text" placeholder="Usuário" required />
-        <input type="password" placeholder="Senha" required />
-        <button type="submit">Entrar</button>
-      </form>
+      <div class="social-login">
+        <button id="google-login" class="btn-social google">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" style="width:20px;vertical-align:middle;margin-right:8px;">
+          Entrar com Google
+        </button>
+        <button id="microsoft-login" class="btn-social microsoft">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoft/microsoft-original.svg" alt="Microsoft" style="width:20px;vertical-align:middle;margin-right:8px;">
+          Entrar com Microsoft
+        </button>
+      </div>
+      <p style="margin-top:16px;font-size:0.9em;color:#bfae5e;">Use sua conta Gmail ou Hotmail/Outlook</p>
     </div>
   </div>
 
@@ -94,6 +100,14 @@
     document.getElementById('login-form').onsubmit = function(e) {
       e.preventDefault();
       alert('Login realizado (simulação)');
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    document.getElementById('google-login').onclick = function() {
+      alert('Login com Google simulado!');
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    document.getElementById('microsoft-login').onclick = function() {
+      alert('Login com Microsoft simulado!');
       document.getElementById('login-modal').style.display = 'none';
     };
   </script>

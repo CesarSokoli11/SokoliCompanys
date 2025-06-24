@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anunciar Imóvel - Sokoly Companys</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">Sokoly Companys</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="imoveis.html">Imóveis</a></li>
+        <li><a href="anunciar.html" class="active">Anunciar</a></li>
+        <li><a href="#">Contato</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="anunciar">
+    <h2>Anuncie seu Imóvel</h2>
+    <form class="form-anunciar">
+      <input type="text" name="local" placeholder="Local do Imóvel" required />
+      <input type="number" name="preco" placeholder="Preço (R$)" required />
+      <select name="tipo" required>
+        <option value="">Tipo de Negócio</option>
+        <option value="venda">Venda</option>
+        <option value="aluguel">Aluguel</option>
+      </select>
+      <input type="text" name="descricao" placeholder="Descrição (ex: 3 quartos, 2 banheiros...)" required />
+      <button type="submit">Anunciar</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Sokoly Companys • Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    document.querySelector('.form-anunciar').onsubmit = function(e) {
+      e.preventDefault();
+      alert('Imóvel anunciado com sucesso! (simulação)');
+      this.reset();
+    };
+  </script>
+</body>
+</html>
