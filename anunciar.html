@@ -14,7 +14,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="imoveis.html">Imóveis</a></li>
         <li><a href="anunciar.html" class="active">Anunciar</a></li>
-        <li><a href="#">Contato</a></li>
+        <li><a href="contato.html">Contato</a></li>
         <li><a href="#" id="login-btn">Login</a></li>
       </ul>
     </nav>
@@ -24,7 +24,7 @@
     <h2>Anuncie seu Imóvel</h2>
     <form class="form-anunciar">
       <input type="text" name="titulo" placeholder="Título do anúncio" required />
-      <input type="url" name="maps" placeholder="Link do Google Maps do imóvel" required />
+      <input type="text" name="localizacao" placeholder="Endereço, bairro, cidade ou link do Google Maps" required />
       <select name="tipo_imovel" required>
         <option value="">Tipo de Imóvel</option>
         <option value="apartamento">Apartamento</option>
@@ -49,6 +49,25 @@
     </form>
   </section>
 
+  <!-- Modal de Login -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="close-login">&times;</span>
+      <h2>Entrar</h2>
+      <div class="social-login">
+        <button id="google-login" class="btn-social google">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" style="width:20px;vertical-align:middle;margin-right:8px;">
+          Entrar com Google
+        </button>
+        <button id="microsoft-login" class="btn-social microsoft">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoft/microsoft-original.svg" alt="Microsoft" style="width:20px;vertical-align:middle;margin-right:8px;">
+          Entrar com Microsoft
+        </button>
+      </div>
+      <p style="margin-top:16px;font-size:0.9em;color:#bfae5e;">Use sua conta Gmail ou Hotmail/Outlook</p>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2025 Sokoly Companys • Todos os direitos reservados</p>
   </footer>
@@ -58,6 +77,31 @@
       e.preventDefault();
       alert('Imóvel anunciado com sucesso! (simulação)');
       this.reset();
+    };
+
+    // Abrir modal
+    document.getElementById('login-btn').onclick = function(e) {
+      e.preventDefault();
+      document.getElementById('login-modal').style.display = 'flex';
+    };
+    // Fechar modal
+    document.getElementById('close-login').onclick = function() {
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    // Fechar ao clicar fora do modal
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('login-modal')) {
+        document.getElementById('login-modal').style.display = 'none';
+      }
+    };
+    // Simulação de login
+    document.getElementById('google-login').onclick = function() {
+      alert('Login com Google simulado!');
+      document.getElementById('login-modal').style.display = 'none';
+    };
+    document.getElementById('microsoft-login').onclick = function() {
+      alert('Login com Microsoft simulado!');
+      document.getElementById('login-modal').style.display = 'none';
     };
   </script>
 </body>
