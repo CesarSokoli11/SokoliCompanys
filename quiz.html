@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz Imobiliário - Sokoly Companys</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">Sokoly Companys</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="imoveis.html">Imóveis</a></li>
+        <li><a href="anunciar.html">Anunciar</a></li>
+        <li><a href="quiz.html" class="active">Quiz IA</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="quiz">
+    <h2>Encontre o imóvel ideal para você</h2>
+    <form id="quiz-form">
+      <label>Tipo de imóvel:
+        <select name="tipo">
+          <option value="apartamento">Apartamento</option>
+          <option value="casa">Casa</option>
+          <option value="cobertura">Cobertura</option>
+        </select>
+      </label><br>
+      <label>Quantidade de quartos:
+        <input type="number" name="quartos" min="1" max="10" value="2" required>
+      </label><br>
+      <label>Faixa de preço:
+        <select name="preco">
+          <option value="baixo">Até R$ 500.000</option>
+          <option value="medio">R$ 500.001 a R$ 2.000.000</option>
+          <option value="alto">Acima de R$ 2.000.000</option>
+        </select>
+      </label><br>
+      <label>Comprar ou alugar?
+        <select name="negocio">
+          <option value="venda">Comprar</option>
+          <option value="aluguel">Alugar</option>
+        </select>
+      </label><br>
+      <button type="submit">Ver recomendações</button>
+    </form>
+    <div id="quiz-result"></div>
+  </section>
+
+  <script>
+    // Exemplo de imóveis (você pode puxar do localStorage ou de um array fixo)
+    const imoveis = [
+      {
+        titulo: "Apartamento em Alphaville",
+        tipo: "apartamento",
+        quartos: 3,
+        preco: 2500000,
+        negocio: "venda",
+        imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        titulo: "Casa de Praia em Búzios",
+        tipo: "casa",
+        quartos: 5,
+        preco: 4200000,
+        negocio: "venda",
+        imagem: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80"
+      },
+      {
+        titulo: "Cobertura no Leblon",
+        tipo: "cobertura",
+        quartos: 4,
+        preco: 8900000,
+        negocio: "venda",
+        imagem: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80"
+      }
+      // Adicione mais imóveis conforme necessário
+    ];
+
+    document.getElementById('quiz-form').onsubmit = function(e) {
+      e.preventDefault();
+      const tipo = this.tipo.value;
+      const quartos = parseInt(this.quartos.value);
+      const preco = this.preco.value;
+      const negocio = this.negocio.value;
+
+      // Filtro inteligente (simulando IA)
+      const resultado = imoveis.filter(imovel => {
+        let faixaPreco = "baixo";
+        if(imovel.preco > 500000 && imovel.preco <= 2000000) faixaPreco = "medio";
+        if(imovel.preco > 2000000) faixaPreco = "alto";
+        return (
+          imovel.tipo === tipo &&
+          imovel.quartos >= quartos &&
+          faixaPreco === preco &&
+          imovel.negocio === negocio
+        );
+      });
+
+      const resultDiv = document.getElementById('quiz-result');
+      if(resultado.length === 0) {
+        resultDiv.innerHTML = "<p style='color:#ffd700;'>Nenhum imóvel encontrado com esse perfil. Tente ajustar suas preferências!</p>";
+      } else {
+        resultDiv.innerHTML = "<h3>Imóveis recomendados:</h3>" + resultado.map(imovel => `
+          <div class="card" style="display:inline-block;margin:10px;">
+            <img src="${imovel.imagem}" alt="${imovel.titulo}" style="width:200px;border-radius:8px;">
+            <h4>${imovel.titulo}</h4>
+            <p>Quartos: ${imovel.quartos}</p>
+            <p>Preço: R$ ${imovel.preco.toLocaleString()}</p>
+          </div>
+        `).join('');
+      }
+    };
+  </script>
+</body>
+</html>
