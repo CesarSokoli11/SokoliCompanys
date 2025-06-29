@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Sokoly Companys</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <section class="login-container" style="max-width:400px;margin:60px auto;background:#181818;padding:32px;border-radius:12px;">
+    <h2 style="color:#ffd700;text-align:center;">Entrar</h2>
+    <div id="user-info" style="display:none;text-align:center;margin-bottom:20px;">
+      <img id="user-photo" src="" alt="Foto de perfil" style="width:80px;height:80px;border-radius:50%;object-fit:cover;cursor:pointer;">
+      <div id="user-name" style="color:#fff;margin-top:8px;"></div>
+      <button id="logout-btn" style="margin-top:10px;">Sair</button>
+    </div>
+    <div id="login-buttons" style="text-align:center;">
+      <button id="google-login" style="margin:8px 0;width:90%;">Entrar com Google</button>
+      <button id="facebook-login" style="margin:8px 0;width:90%;">Entrar com Facebook</button>
+      <button id="instagram-login" style="margin:8px 0;width:90%;" disabled>Entrar com Instagram (em breve)</button>
+    </div>
+    <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
+  </section>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCywB-yRttmmasLV0qVBl3Mo9jn2rJxyb0",
+      authDomain: "sokoli-fec3b.firebaseapp.com",
+      projectId: "sokoli-fec3b",
+      storageBucket: "sokoli-fec3b.appspot.com",
+      messagingSenderId: "508027697948",
+      appId: "1:508027697948:web:2da6d1bbc75bc06e6498d9",
+      measurementId: "G-PGRVSTFC1L"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    const googleBtn = document.getElementById('google-login');
+    const facebookBtn = document.getElementById('facebook-login');
+    const instagramBtn = document.getElementById('instagram-login');
+    const userInfo = document.getElementById('user-info');
+    const userPhoto = document.getElementById('user-photo');
+    const userName = document.getElementById('user-name');
+    const logoutBtn = document.getElementById('logout-btn');
+    const loginBtns = document.getElementById('login-buttons');
+    const profilePicInput = document.getElementById('profile-pic-input');
+
+    googleBtn.onclick = async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (e) {
+        alert('Erro ao logar com Google: ' + e.message);
+      }
+    };
+
+    facebookBtn.onclick = async () => {
+      const provider = new FacebookAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (e) {
+        alert('Erro ao logar com Facebook: ' + e.message);
+      }
+    };
+
+    // Instagram login não implementado (Firebase não suporta nativamente)
+    instagramBtn.onclick = () => {
+      alert('Login com Instagram ainda não está disponível.');
+    };
+
+    logoutBtn.onclick = () => signOut(auth);
+
+    // Trocar foto de perfil
+    userPhoto.onclick = () => {
+      profilePicInput.click();
+    };
+
+    profilePicInput.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (file && auth.currentUser) {
+        const storageRef = ref(storage, 'profile-pics/' + auth.currentUser.uid + '-' + Date.now());
+        await uploadBytes(storageRef, file);
+        const url = await getDownloadURL(storageRef);
+        await updateProfile(auth.currentUser, { photoURL: url });
+        userPhoto.src = url;
+      }
+    };
+
+    // Mostrar info do usuário logado
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        userInfo.style.display = 'block';
+        loginBtns.style.display = 'none';
+        userPhoto.src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
+        userName.textContent = user.displayName || user.email;
+      } else {
+        userInfo.style.display = 'none';
+        loginBtns.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
