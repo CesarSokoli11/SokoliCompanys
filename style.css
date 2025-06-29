@@ -245,3 +245,58 @@ header {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* Quiz ocupa toda a página */
+.quiz {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#quiz-step, #quiz-result {
+  width: 100%;
+  max-width: 500px;
+  background: #232323;
+  color: #ffd700;
+  padding: 32px 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px #0008;
+  margin: 24px 0;
+  text-align: center;
+}
+
+.quiz label {
+  font-size: 1.2em;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.quiz select, .quiz input {
+  width: 80%;
+  padding: 10px;
+  margin: 16px 0;
+  border-radius: 6px;
+  border: 1px solid #ffd700;
+  background: #181818;
+  color: #ffd700;
+  font-size: 1em;
+}
+
+.quiz button {
+  background: #ffd700;
+  color: #181818;
+  border: none;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1em;
+  cursor: pointer;
+  margin-top: 16px;
+  transition: background 0.2s;
+}
+
+.quiz button:hover {
+  background: #e6c200;
+}

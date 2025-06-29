@@ -23,37 +23,12 @@
 
   <section class="quiz">
     <h2>Encontre o imóvel ideal para você</h2>
-    <form id="quiz-form">
-      <label>Tipo de imóvel:
-        <select name="tipo">
-          <option value="apartamento">Apartamento</option>
-          <option value="casa">Casa</option>
-          <option value="cobertura">Cobertura</option>
-        </select>
-      </label><br>
-      <label>Quantidade de quartos:
-        <input type="number" name="quartos" min="1" max="10" value="2" required>
-      </label><br>
-      <label>Faixa de preço:
-        <select name="preco">
-          <option value="baixo">Até R$ 500.000</option>
-          <option value="medio">R$ 500.001 a R$ 2.000.000</option>
-          <option value="alto">Acima de R$ 2.000.000</option>
-        </select>
-      </label><br>
-      <label>Comprar ou alugar?
-        <select name="negocio">
-          <option value="venda">Comprar</option>
-          <option value="aluguel">Alugar</option>
-        </select>
-      </label><br>
-      <button type="submit">Ver recomendações</button>
-    </form>
+    <div id="quiz-step"></div>
     <div id="quiz-result"></div>
   </section>
 
   <script>
-    // Exemplo de imóveis (você pode puxar do localStorage ou de um array fixo)
+    // Exemplo de imóveis (pode puxar do localStorage depois)
     const imoveis = [
       {
         titulo: "Apartamento em Alphaville",
@@ -82,40 +57,133 @@
       // Adicione mais imóveis conforme necessário
     ];
 
-    document.getElementById('quiz-form').onsubmit = function(e) {
-      e.preventDefault();
-      const tipo = this.tipo.value;
-      const quartos = parseInt(this.quartos.value);
-      const preco = this.preco.value;
-      const negocio = this.negocio.value;
+    // Função para pegar opções únicas de um campo dos imóveis
+    function getUniqueOptions(field, filter = () => true) {
+      return [...new Set(imoveis.filter(filter).map(imovel => imovel[field]))];
+    }
 
-      // Filtro inteligente (simulando IA)
-      const resultado = imoveis.filter(imovel => {
-        let faixaPreco = "baixo";
-        if(imovel.preco > 500000 && imovel.preco <= 2000000) faixaPreco = "medio";
-        if(imovel.preco > 2000000) faixaPreco = "alto";
-        return (
-          imovel.tipo === tipo &&
-          imovel.quartos >= quartos &&
-          faixaPreco === preco &&
-          imovel.negocio === negocio
-        );
-      });
-
-      const resultDiv = document.getElementById('quiz-result');
-      if(resultado.length === 0) {
-        resultDiv.innerHTML = "<p style='color:#ffd700;'>Nenhum imóvel encontrado com esse perfil. Tente ajustar suas preferências!</p>";
-      } else {
-        resultDiv.innerHTML = "<h3>Imóveis recomendados:</h3>" + resultado.map(imovel => `
-          <div class="card" style="display:inline-block;margin:10px;">
-            <img src="${imovel.imagem}" alt="${imovel.titulo}" style="width:200px;border-radius:8px;">
-            <h4>${imovel.titulo}</h4>
-            <p>Quartos: ${imovel.quartos}</p>
-            <p>Preço: R$ ${imovel.preco.toLocaleString()}</p>
-          </div>
-        `).join('');
-      }
+    // Estado do quiz
+    let quizState = {
+      tipo: null,
+      quartos: null,
+      preco: null,
+      negocio: null
     };
+    let step = 0;
+
+    function showStep() {
+      const quizStep = document.getElementById('quiz-step');
+      const quizResult = document.getElementById('quiz-result');
+      quizResult.innerHTML = "";
+      quizStep.innerHTML = "";
+
+      if (step === 0) {
+        // Pergunta 1: Tipo de imóvel
+        const tipos = getUniqueOptions('tipo');
+        quizStep.innerHTML = `
+          <label>Qual tipo de imóvel você procura?</label><br>
+          <select id="tipo">
+            ${tipos.map(tipo => `<option value="${tipo}">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</option>`).join('')}
+          </select>
+          <br><button id="next">Seguinte</button>
+        `;
+        document.getElementById('next').onclick = () => {
+          quizState.tipo = document.getElementById('tipo').value;
+          step++;
+          showStep();
+        };
+      } else if (step === 1) {
+        // Pergunta 2: Quartos (baseado no tipo escolhido)
+        const quartos = getUniqueOptions('quartos', imovel => imovel.tipo === quizState.tipo).sort((a, b) => a - b);
+        quizStep.innerHTML = `
+          <label>Quantos quartos você deseja?</label><br>
+          <select id="quartos">
+            ${quartos.map(q => `<option value="${q}">${q}</option>`).join('')}
+          </select>
+          <br><button id="next">Seguinte</button>
+        `;
+        document.getElementById('next').onclick = () => {
+          quizState.quartos = parseInt(document.getElementById('quartos').value);
+          step++;
+          showStep();
+        };
+      } else if (step === 2) {
+        // Pergunta 3: Faixa de preço (baseado no tipo e quartos)
+        const precos = imoveis
+          .filter(imovel => imovel.tipo === quizState.tipo && imovel.quartos === quizState.quartos)
+          .map(imovel => imovel.preco);
+        let faixa = [];
+        if (precos.some(p => p <= 500000)) faixa.push({label: "Até R$ 500.000", value: "baixo"});
+        if (precos.some(p => p > 500000 && p <= 2000000)) faixa.push({label: "R$ 500.001 a R$ 2.000.000", value: "medio"});
+        if (precos.some(p => p > 2000000)) faixa.push({label: "Acima de R$ 2.000.000", value: "alto"});
+        quizStep.innerHTML = `
+          <label>Qual faixa de preço?</label><br>
+          <select id="preco">
+            ${faixa.map(f => `<option value="${f.value}">${f.label}</option>`).join('')}
+          </select>
+          <br><button id="next">Seguinte</button>
+        `;
+        document.getElementById('next').onclick = () => {
+          quizState.preco = document.getElementById('preco').value;
+          step++;
+          showStep();
+        };
+      } else if (step === 3) {
+        // Pergunta 4: Negócio (baseado nos filtros anteriores)
+        const negocios = getUniqueOptions('negocio', imovel =>
+          imovel.tipo === quizState.tipo &&
+          imovel.quartos === quizState.quartos &&
+          (
+            (quizState.preco === "baixo" && imovel.preco <= 500000) ||
+            (quizState.preco === "medio" && imovel.preco > 500000 && imovel.preco <= 2000000) ||
+            (quizState.preco === "alto" && imovel.preco > 2000000)
+          )
+        );
+        quizStep.innerHTML = `
+          <label>Você quer comprar ou alugar?</label><br>
+          <select id="negocio">
+            ${negocios.map(n => `<option value="${n}">${n.charAt(0).toUpperCase() + n.slice(1)}</option>`).join('')}
+          </select>
+          <br><button id="next">Ver recomendações</button>
+        `;
+        document.getElementById('next').onclick = () => {
+          quizState.negocio = document.getElementById('negocio').value;
+          step++;
+          showStep();
+        };
+      } else {
+        // Resultado
+        const resultado = imoveis.filter(imovel => {
+          let faixaPreco = "baixo";
+          if(imovel.preco > 500000 && imovel.preco <= 2000000) faixaPreco = "medio";
+          if(imovel.preco > 2000000) faixaPreco = "alto";
+          return (
+            imovel.tipo === quizState.tipo &&
+            imovel.quartos === quizState.quartos &&
+            faixaPreco === quizState.preco &&
+            imovel.negocio === quizState.negocio
+          );
+        });
+        quizStep.innerHTML = "";
+        if(resultado.length === 0) {
+          quizResult.innerHTML = "<p style='color:#ffd700;'>Nenhum imóvel encontrado com esse perfil. Tente novamente!</p>";
+        } else {
+          quizResult.innerHTML = "<h3>Imóveis recomendados:</h3>" + resultado.map(imovel => `
+            <div class="card" style="display:inline-block;margin:10px;">
+              <img src="${imovel.imagem}" alt="${imovel.titulo}" style="width:200px;border-radius:8px;">
+              <h4>${imovel.titulo}</h4>
+              <p>Quartos: ${imovel.quartos}</p>
+              <p>Preço: R$ ${imovel.preco.toLocaleString()}</p>
+            </div>
+          `).join('');
+        }
+        // Botão para recomeçar
+        quizResult.innerHTML += `<br><button onclick="location.reload()">Refazer Quiz</button>`;
+      }
+    }
+
+    // Iniciar quiz
+    showStep();
   </script>
 </body>
 </html>
