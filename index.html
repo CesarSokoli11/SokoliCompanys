@@ -95,8 +95,23 @@
             <img src="${photo}" alt="Perfil" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
             <span style="color:#ffd700;font-weight:bold;">${name}</span>
           </button>
-          <div id="dropdown-content" style="display:none;position:absolute;right:0;background:#222;padding:10px 0;border-radius:8px;box-shadow:0 2px 8px #0008;z-index:100;">
+          <div id="dropdown-content" style="display:none;position:absolute;right:0;background:#222;padding:10px 0;border-radius:8px;box-shadow:0 2px 8px #0008;z-index:100;min-width:220px;">
             <button id="edit-photo" style="display:block;width:100%;background:none;border:none;color:#ffd700;padding:8px 24px;text-align:left;cursor:pointer;">Editar foto de perfil</button>
+            <div id="avatar-select" style="display:none;padding:12px 24px 0 24px;">
+              <div style="color:#fff;font-size:14px;margin-bottom:8px;">Escolha um avatar:</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#bfe6fa;padding:6px;">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user-female.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#f9b2d2;padding:6px;">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user-alt.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#ffd180;padding:6px;">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#b2e67c;padding:6px;filter:grayscale(1);">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user-female.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#fff176;padding:6px;filter:grayscale(1);">
+                <img src='https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user-alt.svg' class="avatar-option" style="width:48px;height:48px;border-radius:50%;cursor:pointer;background:#bfe6fa;padding:6px;filter:grayscale(1);">
+              </div>
+              <div style="margin:10px 0 0 0;text-align:center;">
+                <button id="close-avatar-select" style="background:none;border:none;color:#ffd700;cursor:pointer;font-size:13px;">Cancelar</button>
+              </div>
+            </div>
+            <button id="upload-photo" style="display:block;width:100%;background:none;border:none;color:#ffd700;padding:8px 24px;text-align:left;cursor:pointer;">Enviar do computador</button>
             <button id="logout" style="display:block;width:100%;background:none;border:none;color:#ffd700;padding:8px 24px;text-align:left;cursor:pointer;">Sair da conta</button>
             <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
           </div>
@@ -110,29 +125,62 @@
         e.preventDefault();
         dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
       };
-      // Fecha dropdown ao clicar fora
-      document.addEventListener('click', function handler(event) {
-        if (!userMenu.contains(event.target)) {
+      // Fecha dropdown ao clicar fora, mas NÃO fecha se clicar no input de arquivo
+      document.addEventListener('mousedown', function handler(event) {
+        const avatarSelect = document.getElementById('avatar-select');
+        const fileInput = document.getElementById('profile-pic-input');
+        if (!userMenu.contains(event.target) && event.target !== fileInput) {
           dropdown.style.display = 'none';
+          avatarSelect.style.display = 'none';
         }
       });
 
-      // Editar foto de perfil
-      document.getElementById('edit-photo').onclick = () => {
+      // Editar foto de perfil (mostra seleção de avatares)
+      document.getElementById('edit-photo').onclick = (e) => {
+        e.stopPropagation();
+        document.getElementById('avatar-select').style.display = 'block';
+      };
+      // Cancelar seleção de avatar
+      document.getElementById('close-avatar-select').onclick = (e) => {
+        e.stopPropagation();
+        document.getElementById('avatar-select').style.display = 'none';
+      };
+      // Seleção de avatar pronto
+      document.querySelectorAll('.avatar-option').forEach(img => {
+        img.onclick = async (e) => {
+          e.stopPropagation();
+          if (auth.currentUser) {
+            await updateProfile(auth.currentUser, { photoURL: img.src });
+            document.querySelector('#user-btn img').src = img.src;
+            document.getElementById('avatar-select').style.display = 'none';
+          }
+        };
+      });
+      // Upload do computador
+      document.getElementById('upload-photo').onclick = (e) => {
+        e.stopPropagation();
         document.getElementById('profile-pic-input').click();
       };
+      // Corrige: garante que upload funciona mesmo com avatar-select aberto
       document.getElementById('profile-pic-input').onchange = async (e) => {
+        e.stopPropagation();
         const file = e.target.files[0];
         if (file && auth.currentUser) {
-          const storageRef = ref(storage, 'profile-pics/' + auth.currentUser.uid + '-' + Date.now());
-          await uploadBytes(storageRef, file);
-          const url = await getDownloadURL(storageRef);
-          await updateProfile(auth.currentUser, { photoURL: url });
-          // Atualiza a foto no menu
-          document.querySelector('#user-btn img').src = url;
+          try {
+            const ext = file.name.split('.').pop();
+            const storageRef = ref(storage, 'profile-pics/' + auth.currentUser.uid + '-' + Date.now() + (ext ? '.' + ext : ''));
+            await uploadBytes(storageRef, file);
+            const url = await getDownloadURL(storageRef);
+            await updateProfile(auth.currentUser, { photoURL: url });
+            document.querySelector('#user-btn img').src = url;
+            document.getElementById('avatar-select').style.display = 'none';
+            dropdown.style.display = 'none';
+            e.target.value = '';
+          } catch (err) {
+            alert('Erro ao enviar a foto. Tente outro arquivo ou formato.');
+          }
         }
       };
-
       // Sair da conta
       document.getElementById('logout').onclick = async () => {
         await signOut(auth);
