@@ -72,36 +72,36 @@
     <p>&copy; 2025 Sokoly Companys • Todos os direitos reservados</p>
   </footer>
 
-  <script>
-    document.querySelector('.form-anunciar').onsubmit = function(e) {
-      e.preventDefault();
+  <script type="module">
+// filepath: c:\Users\cesar\OneDrive\Empresa\anunciar.html
+const form = document.querySelector('.form-anunciar');
+if(form) {
+  form.onsubmit = async function(e) {
+    e.preventDefault();
 
-      // Pega os dados do formulário
-      const form = this;
-      const novoImovel = {
-        titulo: form.titulo.value,
-        localizacao: form.localizacao.value,
-        tipo_imovel: form.tipo_imovel.value,
-        preco: form.preco.value,
-        negocio: form.negocio.value,
-        quartos: form.quartos.value,
-        banheiros: form.banheiros.value,
-        vagas: form.vagas.value,
-        area: form.area.value,
-        descricao: form.descricao.value,
-        // Não salva imagem real, só simula
-        imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
-      };
-
-      // Salva no localStorage
-      const imoveis = JSON.parse(localStorage.getItem('imoveis')) || [];
-      imoveis.push(novoImovel);
-      localStorage.setItem('imoveis', JSON.stringify(imoveis));
-
-      alert('Imóvel anunciado com sucesso!');
-      form.reset();
+    const novoImovel = {
+      titulo: form.titulo.value,
+      localizacao: form.localizacao.value,
+      tipo_imovel: form.tipo_imovel.value,
+      preco: form.preco.value,
+      negocio: form.negocio.value,
+      quartos: form.quartos.value,
+      banheiros: form.banheiros.value,
+      vagas: form.vagas.value,
+      area: form.area.value,
+      descricao: form.descricao.value,
+      imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
     };
 
+    try {
+      await addDoc(collection(db, "imoveis"), novoImovel);
+      alert('Imóvel anunciado com sucesso!');
+      form.reset();
+    } catch (error) {
+      alert('Erro ao anunciar imóvel: ' + error.message);
+    }
+  };
+}
     // Abrir modal
     document.getElementById('login-btn').onclick = function(e) {
       e.preventDefault();

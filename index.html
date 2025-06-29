@@ -21,7 +21,7 @@
         <li><a href="quiz.html">Quiz</a></li>
         <li><a href="anunciar.html">Anunciar</a></li>
         <li><a href="contato.html">Contato</a></li>
-        <li><a href="login.html">Login</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
       </ul>
     </nav>
   </header>
@@ -113,5 +113,28 @@
     };
   </script>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCywB-yRttmmasLV0qVBl3Mo9jn2rJxyb0",
+      authDomain: "sokoli-fec3b.firebaseapp.com",
+      projectId: "sokoli-fec3b",
+      storageBucket: "sokoli-fec3b.appspot.com",
+      messagingSenderId: "508027697948",
+      appId: "1:508027697948:web:2da6d1bbc75bc06e6498d9",
+      measurementId: "G-PGRVSTFC1L"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Exponha db para outros scripts
+    window.db = db;
+    window.collection = collection;
+    window.addDoc = addDoc;
+    window.getDocs = getDocs;
+  </script>
 </body>
 </html>

@@ -196,5 +196,40 @@
     };
   </script>
 
+  <script type="module">
+    // filepath: c:\Users\cesar\OneDrive\Empresa\imoveis.html
+    async function carregarImoveis() {
+      const container = document.querySelector('.cards-container');
+      container.innerHTML = "<p style='color:#ffd700;'>Carregando imóveis...</p>";
+      try {
+        const snapshot = await getDocs(collection(db, "imoveis"));
+        if (snapshot.empty) {
+          container.innerHTML = "<p style='color:#ffd700;'>Nenhum imóvel cadastrado ainda.</p>";
+        } else {
+          container.innerHTML = "";
+          snapshot.forEach(doc => {
+            const imovel = doc.data();
+            container.innerHTML += `
+              <div class="card">
+                <img src="${imovel.imagem}" alt="${imovel.titulo}" />
+                <h3>${imovel.titulo}</h3>
+                <p>${imovel.localizacao}</p>
+                <p>R$ ${parseFloat(imovel.preco).toLocaleString()} • ${imovel.quartos} quartos • ${imovel.area}m²</p>
+                <span style="color:#bfae5e; font-size:0.9em;">Cadastrado por: Usuário</span>
+                <div class="card-actions">
+                  <button class="btn-fav" title="Favoritar">&#9734;</button>
+                  <button class="btn-detalhes">Detalhes</button>
+                </div>
+              </div>
+            `;
+          });
+        }
+      } catch (error) {
+        container.innerHTML = "<p style='color:red;'>Erro ao carregar imóveis: " + error.message + "</p>";
+      }
+    }
+    carregarImoveis();
+  </script>
+
 </body>
 </html>
