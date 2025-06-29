@@ -15,6 +15,7 @@
         <li><a href="imoveis.html">Imóveis</a></li>
         <li><a href="anunciar.html" class="active">Anunciar</a></li>
         <li><a href="contato.html">Contato</a></li>
+        <li><a href="como-adicionar-imagens.html">Como Adicionar Imagens</a></li>
         <li><a href="#" id="login-btn">Login</a></li>
       </ul>
     </nav>
@@ -46,6 +47,7 @@
       <textarea name="descricao" placeholder="Descrição detalhada" rows="4" required></textarea>
       <input type="file" name="fotos" accept="image/*" multiple />
       <button type="submit">Anunciar</button>
+      <a href="como-adicionar-imagens.html" class="btn-ajuda-imagem" style="display:inline-block;margin-top:12px;text-align:center;background:#ffd700;color:#222;padding:10px 16px;border-radius:6px;text-decoration:none;font-weight:bold;">Como adicionar imagens?</a>
     </form>
   </section>
 
@@ -89,32 +91,34 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const form = document.querySelector('.form-anunciar');
-    if(form) {
-      form.onsubmit = async function(e) {
-        e.preventDefault();
-        const novoImovel = {
-          titulo: form.titulo.value,
-          localizacao: form.localizacao.value,
-          tipo_imovel: form.tipo_imovel.value,
-          preco: form.preco.value,
-          negocio: form.negocio.value,
-          quartos: form.quartos.value,
-          banheiros: form.banheiros.value,
-          vagas: form.vagas.value,
-          area: form.area.value,
-          descricao: form.descricao.value,
-          imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+    window.addEventListener('DOMContentLoaded', () => {
+      const form = document.querySelector('.form-anunciar');
+      if(form) {
+        form.onsubmit = async function(e) {
+          e.preventDefault();
+          const novoImovel = {
+            titulo: form.titulo.value,
+            localizacao: form.localizacao.value,
+            tipo_imovel: form.tipo_imovel.value,
+            preco: form.preco.value,
+            negocio: form.negocio.value,
+            quartos: form.quartos.value,
+            banheiros: form.banheiros.value,
+            vagas: form.vagas.value,
+            area: form.area.value,
+            descricao: form.descricao.value,
+            imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+          };
+          try {
+            await addDoc(collection(db, "imoveis"), novoImovel);
+            alert('Imóvel anunciado com sucesso!');
+            window.location.href = "imoveis.html";
+          } catch (error) {
+            alert('Erro ao anunciar imóvel: ' + error.message);
+          }
         };
-        try {
-          await addDoc(collection(db, "imoveis"), novoImovel);
-          alert('Imóvel anunciado com sucesso!');
-          window.location.href = "imoveis.html";
-        } catch (error) {
-          alert('Erro ao anunciar imóvel: ' + error.message);
-        }
-      };
-    }
+      }
+    });
     document.getElementById('login-btn').onclick = function(e) {
       e.preventDefault();
       document.getElementById('login-modal').style.display = 'flex';

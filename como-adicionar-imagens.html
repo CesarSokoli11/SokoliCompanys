@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Como Adicionar Imagens - Sokoly Companys</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <h1 class="logo">Sokoly Companys</h1>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="imoveis.html">Imóveis</a></li>
+        <li><a href="anunciar.html">Anunciar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+        <li><a href="como-adicionar-imagens.html" class="active">Como Adicionar Imagens</a></li>
+        <li><a href="#" id="login-btn">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="ajuda-imagens" style="max-width:600px;margin:40px auto;background:#181818;padding:32px;border-radius:12px;">
+    <h2 style="color:#ffd700;">Como adicionar imagens aos imóveis?</h2>
+    <ol style="color:#fff;font-size:1.1em;">
+      <li>Para que todos vejam a imagem do seu imóvel, ela precisa estar hospedada na internet.</li>
+      <li>Recomendamos usar o <b>Firebase Storage</b> para hospedar suas imagens.</li>
+      <li>No formulário de anúncio, selecione a imagem do seu computador ou celular.</li>
+      <li>Ao clicar em "Anunciar", a imagem será enviada para o Firebase Storage e ficará disponível para todos.</li>
+      <li>Se você não usar o Firebase Storage, a imagem não aparecerá para outros usuários.</li>
+    </ol>
+    <h3 style="color:#ffd700;">Como configurar o Firebase Storage?</h3>
+    <ol style="color:#fff;">
+      <li>Acesse o <a href="https://console.firebase.google.com/" target="_blank" style="color:#ffd700;">console do Firebase</a> e selecione seu projeto.</li>
+      <li>No menu esquerdo, clique em <b>Storage</b> e depois em <b>Criar Storage</b>.</li>
+      <li>Siga os passos para ativar o Storage.</li>
+      <li>Nas regras do Storage, para testes, use:<br>
+        <pre style="background:#222;color:#ffd700;padding:8px;border-radius:6px;">allow read, write: if true;</pre>
+      </li>
+      <li>Salve as regras e pronto! Agora seu site pode hospedar imagens.</li>
+    </ol>
+    <p style="color:#ffd700;margin-top:24px;">Se precisar de ajuda, entre em contato pelo menu "Contato".</p>
+  </section>
+</body>
+</html>
