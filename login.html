@@ -14,17 +14,21 @@
       <div id="user-name" style="color:#fff;margin-top:8px;"></div>
       <button id="logout-btn" style="margin-top:10px;">Sair</button>
     </div>
-    <div id="login-buttons" style="text-align:center;">
-      <button id="google-login" style="margin:8px 0;width:90%;">Entrar com Google</button>
-      <button id="facebook-login" style="margin:8px 0;width:90%;">Entrar com Facebook</button>
-      <button id="instagram-login" style="margin:8px 0;width:90%;" disabled>Entrar com Instagram (em breve)</button>
-    </div>
+    <form id="login-form" style="text-align:center;">
+      <input type="email" id="email" placeholder="E-mail" required style="width:90%;margin:8px 0;padding:8px;border-radius:6px;border:none;">
+      <input type="password" id="password" placeholder="Senha" required style="width:90%;margin:8px 0;padding:8px;border-radius:6px;border:none;">
+      <button type="submit" style="width:90%;margin:8px 0;">Entrar</button>
+      <button type="button" id="register-btn" style="width:90%;margin:8px 0;">Criar conta</button>
+      <button type="button" id="google-login" style="width:90%;margin:8px 0;background:#fff;color:#222;border:1px solid #ffd700;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:18px;vertical-align:middle;margin-right:8px;">Entrar com Google
+      </button>
+    </form>
     <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
   </section>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signOut, updateProfile, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -41,38 +45,49 @@
     const auth = getAuth(app);
     const storage = getStorage(app);
 
-    const googleBtn = document.getElementById('google-login');
-    const facebookBtn = document.getElementById('facebook-login');
-    const instagramBtn = document.getElementById('instagram-login');
     const userInfo = document.getElementById('user-info');
     const userPhoto = document.getElementById('user-photo');
     const userName = document.getElementById('user-name');
     const logoutBtn = document.getElementById('logout-btn');
-    const loginBtns = document.getElementById('login-buttons');
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const registerBtn = document.getElementById('register-btn');
+    const googleBtn = document.getElementById('google-login');
     const profilePicInput = document.getElementById('profile-pic-input');
 
-    googleBtn.onclick = async () => {
+    // Login com e-mail e senha
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      try {
+        await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+      } catch (err) {
+        alert('Erro ao entrar: ' + err.message);
+      }
+    });
+
+    // Criar conta
+    registerBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+        await updateProfile(cred.user, { displayName: emailInput.value.split('@')[0] });
+        alert('Conta criada com sucesso! Agora você já pode acessar.');
+      } catch (err) {
+        alert('Erro ao criar conta: ' + err.message);
+      }
+    });
+
+    // Login com Google
+    googleBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
       const provider = new GoogleAuthProvider();
       try {
         await signInWithPopup(auth, provider);
-      } catch (e) {
-        alert('Erro ao logar com Google: ' + e.message);
+      } catch (err) {
+        alert('Erro ao entrar com Google: ' + err.message);
       }
-    };
-
-    facebookBtn.onclick = async () => {
-      const provider = new FacebookAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (e) {
-        alert('Erro ao logar com Facebook: ' + e.message);
-      }
-    };
-
-    // Instagram login não implementado (Firebase não suporta nativamente)
-    instagramBtn.onclick = () => {
-      alert('Login com Instagram ainda não está disponível.');
-    };
+    });
 
     logoutBtn.onclick = () => signOut(auth);
 
@@ -96,12 +111,12 @@
     onAuthStateChanged(auth, user => {
       if (user) {
         userInfo.style.display = 'block';
-        loginBtns.style.display = 'none';
+        loginForm.style.display = 'none';
         userPhoto.src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
         userName.textContent = user.displayName || user.email;
       } else {
         userInfo.style.display = 'none';
-        loginBtns.style.display = 'block';
+        loginForm.style.display = 'block';
       }
     });
   </script>
