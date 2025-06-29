@@ -19,16 +19,13 @@
       <input type="password" id="password" placeholder="Senha" required style="width:90%;margin:8px 0;padding:8px;border-radius:6px;border:none;">
       <button type="submit" style="width:90%;margin:8px 0;">Entrar</button>
       <button type="button" id="register-btn" style="width:90%;margin:8px 0;">Criar conta</button>
-      <button type="button" id="google-login" style="width:90%;margin:8px 0;background:#fff;color:#222;border:1px solid #ffd700;">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" style="width:18px;vertical-align:middle;margin-right:8px;">Entrar com Google
-      </button>
     </form>
     <input type="file" id="profile-pic-input" accept="image/*" style="display:none;">
   </section>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -53,7 +50,6 @@
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const registerBtn = document.getElementById('register-btn');
-    const googleBtn = document.getElementById('google-login');
     const profilePicInput = document.getElementById('profile-pic-input');
 
     // Login com e-mail e senha
@@ -75,17 +71,6 @@
         alert('Conta criada com sucesso! Agora você já pode acessar.');
       } catch (err) {
         alert('Erro ao criar conta: ' + err.message);
-      }
-    });
-
-    // Login com Google
-    googleBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      const provider = new GoogleAuthProvider();
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        alert('Erro ao entrar com Google: ' + err.message);
       }
     });
 
@@ -114,6 +99,11 @@
         loginForm.style.display = 'none';
         userPhoto.src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
         userName.textContent = user.displayName || user.email;
+
+        // Redireciona para a página inicial após login
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200); // espera 1,2s para mostrar o login antes de redirecionar
       } else {
         userInfo.style.display = 'none';
         loginForm.style.display = 'block';
