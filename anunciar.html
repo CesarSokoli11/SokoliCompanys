@@ -73,51 +73,60 @@
   </footer>
 
   <script type="module">
-// filepath: c:\Users\cesar\OneDrive\Empresa\anunciar.html
-const form = document.querySelector('.form-anunciar');
-if(form) {
-  form.onsubmit = async function(e) {
-    e.preventDefault();
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    const novoImovel = {
-      titulo: form.titulo.value,
-      localizacao: form.localizacao.value,
-      tipo_imovel: form.tipo_imovel.value,
-      preco: form.preco.value,
-      negocio: form.negocio.value,
-      quartos: form.quartos.value,
-      banheiros: form.banheiros.value,
-      vagas: form.vagas.value,
-      area: form.area.value,
-      descricao: form.descricao.value,
-      imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+    const firebaseConfig = {
+      apiKey: "AIzaSyCywB-yRttmmasLV0qVBl3Mo9jn2rJxyb0",
+      authDomain: "sokoli-fec3b.firebaseapp.com",
+      projectId: "sokoli-fec3b",
+      storageBucket: "sokoli-fec3b.appspot.com",
+      messagingSenderId: "508027697948",
+      appId: "1:508027697948:web:2da6d1bbc75bc06e6498d9",
+      measurementId: "G-PGRVSTFC1L"
     };
 
-    try {
-      await addDoc(collection(db, "imoveis"), novoImovel);
-      alert('Imóvel anunciado com sucesso!');
-      form.reset();
-    } catch (error) {
-      alert('Erro ao anunciar imóvel: ' + error.message);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.querySelector('.form-anunciar');
+    if(form) {
+      form.onsubmit = async function(e) {
+        e.preventDefault();
+        const novoImovel = {
+          titulo: form.titulo.value,
+          localizacao: form.localizacao.value,
+          tipo_imovel: form.tipo_imovel.value,
+          preco: form.preco.value,
+          negocio: form.negocio.value,
+          quartos: form.quartos.value,
+          banheiros: form.banheiros.value,
+          vagas: form.vagas.value,
+          area: form.area.value,
+          descricao: form.descricao.value,
+          imagem: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+        };
+        try {
+          await addDoc(collection(db, "imoveis"), novoImovel);
+          alert('Imóvel anunciado com sucesso!');
+          window.location.href = "imoveis.html";
+        } catch (error) {
+          alert('Erro ao anunciar imóvel: ' + error.message);
+        }
+      };
     }
-  };
-}
-    // Abrir modal
     document.getElementById('login-btn').onclick = function(e) {
       e.preventDefault();
       document.getElementById('login-modal').style.display = 'flex';
     };
-    // Fechar modal
     document.getElementById('close-login').onclick = function() {
       document.getElementById('login-modal').style.display = 'none';
     };
-    // Fechar ao clicar fora do modal
     window.onclick = function(event) {
       if (event.target == document.getElementById('login-modal')) {
         document.getElementById('login-modal').style.display = 'none';
       }
     };
-    // Simulação de login
     document.getElementById('google-login').onclick = function() {
       alert('Login com Google simulado!');
       document.getElementById('login-modal').style.display = 'none';
