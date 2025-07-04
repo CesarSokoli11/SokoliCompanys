@@ -25,7 +25,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-storage.js";
 
     const firebaseConfig = {
@@ -97,7 +97,7 @@
       if (user) {
         userInfo.style.display = 'block';
         loginForm.style.display = 'none';
-        userPhoto.src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
+        userPhoto.src = user.photoURL || 'https://cdn.jsdelivr.net/gh/edent/SuperTinyIcons/images/svg/user.svg';
         userName.textContent = user.displayName || user.email;
 
         // Redireciona para a página inicial após login
@@ -109,6 +109,21 @@
         loginForm.style.display = 'block';
       }
     });
+
+    const googleBtn = document.createElement('button');
+    googleBtn.textContent = 'Entrar com Google';
+    googleBtn.style = 'width:90%;margin:8px 0;';
+    loginForm.appendChild(googleBtn);
+
+    googleBtn.onclick = async (e) => {
+      e.preventDefault();
+      const provider = new GoogleAuthProvider();
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        alert('Erro ao entrar com Google: ' + err.message);
+      }
+    };
   </script>
 </body>
 </html>
